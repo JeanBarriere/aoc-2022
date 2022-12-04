@@ -1,3 +1,4 @@
+import { map } from "@utils/array";
 import { createAdventRunnerForDay } from "@utils/runner";
 import { list } from "@utils/transformers";
 
@@ -9,11 +10,6 @@ type Rucksacks = Rucksack[];
 type Ruckstack = [a: BigRucksack, b: BigRucksack, c: BigRucksack];
 
 const Priorities = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-const map =
-  <T, U>(mapFn: (value: T) => U) =>
-  (arr: T[]) =>
-    arr.map(mapFn);
 
 const splitInHalf = (line: string) =>
   [
@@ -81,7 +77,7 @@ runner.run((rucksacks: Rucksacks) => {
 runner.run((ruckstacks: Ruckstack[]) => {
   return (
     ruckstacks
-    //   .map(findCommonLetterInRucktrack)
+      // .map(findCommonLetterInRucktrack)
       .map((ruckstack) => findCommonLetterGeneric(...ruckstack))
       .map(letterToPriorityPoint)
       .reduce(sum)
