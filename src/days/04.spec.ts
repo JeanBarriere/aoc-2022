@@ -36,14 +36,12 @@ export const vectorsList: Transformer<Array<[Vector, Vector]>> = async (
     .then(map(split(",")))
     .then(map(map(Vector.from) as (value: string[]) => [Vector, Vector]));
 
-const sum = (left: number, right: number) => left + right;
-
 runner.run(
   (vectorsList) =>
     vectorsList
       .map(([a, b]) => a.includes(b) || b.includes(a))
-      .map(Number)
-      .reduce(sum),
+      .filter(Boolean)
+      .length,
   vectorsList
 );
 
@@ -51,7 +49,7 @@ runner.run(
   (vectorsList) =>
     vectorsList
       .map(([a, b]) => a.intersects(b) || b.intersects(a))
-      .map(Number)
-      .reduce(sum),
+      .filter(Boolean)
+      .length,
   vectorsList
 );
