@@ -26,18 +26,6 @@ class Vector<Dimension = number> {
   public intersects(vector: Vector<Dimension>): boolean {
     return this.#from <= vector.#from && this.#to >= vector.#from;
   }
-
-  public toString(): string {
-    return `[${this.#from}:${this.#to}]`;
-  }
-
-  public get from(): Dimension {
-    return this.#from;
-  }
-
-  public get to(): Dimension {
-    return this.#to;
-  }
 }
 
 const runner = createAdventRunnerForDay(4);
