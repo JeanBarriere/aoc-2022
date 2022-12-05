@@ -39,8 +39,7 @@ export const vectorsList: Transformer<Array<[Vector, Vector]>> = async (
 runner.run(
   (vectorsList) =>
     vectorsList
-      .map(([a, b]) => a.includes(b) || b.includes(a))
-      .filter(Boolean)
+      .filter(([a, b]) => a.includes(b) || b.includes(a))
       .length,
   vectorsList
 );
@@ -48,8 +47,7 @@ runner.run(
 runner.run(
   (vectorsList) =>
     vectorsList
-      .map(([a, b]) => a.intersects(b) || b.intersects(a))
-      .filter(Boolean)
+      .filter(([a, b]) => a.intersects(b) || b.intersects(a))
       .length,
   vectorsList
 );
