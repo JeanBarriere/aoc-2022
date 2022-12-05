@@ -36,10 +36,10 @@ const toCargo = (input?: string): Cargo => {
   input
     ?.split('\n')
     .reverse()
-    // get each value
-    .map((line) => line.split('').filter((_, index) => (index - 1) % 4 === 0))
     // remove crates numbers
     .slice(1)
+    // get each value
+    .map((line) => line.split('').filter((_, index) => (index - 1) % 4 === 0))
     // add crates in cargo
     .forEach(
       map((value, index) => {

@@ -1,8 +1,9 @@
-import { map } from '@utils/array';
+import { filter, length, map } from '@utils/array';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { split } from '@utils/string';
 import { list } from '@utils/transformers';
 import { Transformer } from '@types';
+import { flow, pipe } from '@utils/function';
 
 class Vector<Dimension = number> {
   #from: Dimension;
@@ -29,11 +30,25 @@ class Vector<Dimension = number> {
 }
 
 const runner = createAdventRunnerForDay(4);
-export const vectorsList: Transformer<[Vector, Vector][]> = async (value: string) =>
-  Promise.resolve(list(value))
-    .then(map(split(',')))
-    .then(map(map(Vector.from) as (value: string[]) => [Vector, Vector]));
 
-runner.run((vectorsList) => vectorsList.filter(([a, b]) => a.includes(b) || b.includes(a)).length, vectorsList);
+const vectorsList: Transformer<[Vector, Vector][]> = flow(
+  list,
+  map(split(',')),
+  map(map(Vector.from) as (value: string[]) => [Vector, Vector])
+);
 
-runner.run((vectorsList) => vectorsList.filter(([a, b]) => a.intersects(b) || b.intersects(a)).length, vectorsList);
+runner.run(
+  flow(
+    filter(([a, b]: [Vector, Vector]) => a.includes(b) || b.includes(a)),
+    length
+  ),
+  vectorsList
+);
+
+runner.run(
+  flow(
+    filter(([a, b]: [Vector, Vector]) => a.intersects(b) || b.intersects(a)),
+    length
+  ),
+  vectorsList
+);
