@@ -2,8 +2,8 @@ import { filter, length, map } from '@utils/array';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { split } from '@utils/string';
 import { list } from '@utils/transformers';
-import { Transformer } from '@types';
-import { flow, pipe } from '@utils/function';
+import { flow } from '@utils/function';
+import { asTuple } from '@utils/tuple';
 
 class Vector<Dimension = number> {
   #from: Dimension;
@@ -31,11 +31,7 @@ class Vector<Dimension = number> {
 
 const runner = createAdventRunnerForDay(4);
 
-const vectorsList: Transformer<[Vector, Vector][]> = flow(
-  list,
-  map(split(',')),
-  map(map(Vector.from) as (value: string[]) => [Vector, Vector])
-);
+const vectorsList = flow(list, map(split(',')), map(map(Vector.from)), map(asTuple));
 
 runner.run(
   flow(

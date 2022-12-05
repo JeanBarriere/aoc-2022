@@ -1,6 +1,8 @@
-import { last, map } from '@utils/array';
+import { filter, last, map, reduce, reverse, slice } from '@utils/array';
+import { flow, get, pipe } from '@utils/function';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { split } from '@utils/string';
+import { asTuple } from '@utils/tuple';
 
 const runner = createAdventRunnerForDay(5);
 
@@ -28,38 +30,40 @@ class Cargo {
 }
 
 type Instruction = [amount: number, from: number, to: number];
-type InstructionSet = Instruction[];
 
-const toCargo = (input?: string): Cargo => {
-  const cargo = new Cargo(9);
+const toCargo = flow(
+  split('\n'),
+  reverse,
+  // remove crates position number
+  slice(1),
+  map(
+    // cleanup each line and get its value
+    flow(
+      split(''),
+      filter((_, index) => (index - 1) % 4 === 0)
+    )
+  ),
+  reduce(
+    (cargo, line) =>
+      pipe(
+        line,
+        map((value: string, index) => value !== ' ' && cargo.mover.addCrates(index, value)),
+        get(cargo)
+      ),
+    new Cargo(9)
+  )
+);
 
-  input
-    ?.split('\n')
-    .reverse()
-    // remove crates numbers
-    .slice(1)
-    // get each value
-    .map((line) => line.split('').filter((_, index) => (index - 1) % 4 === 0))
-    // add crates in cargo
-    .forEach(
-      map((value, index) => {
-        if (value !== ' ') {
-          cargo.mover.addCrates(index, value);
-        }
-      })
-    );
-  return cargo;
-};
+const toInstructionSet = flow(
+  split('\n'),
+  map((line) => line.split(/[move|from|to]/).filter(Number).map(Number) as Instruction)
+);
 
-const toInstructionSet = (input?: string): InstructionSet => {
-  return input?.split('\n').map((line) => line.split(/[move|from|to]/).filter(Number).map(Number) as Instruction) ?? [];
-};
-
-const inputToCargoAndInstructions = (value: string): Promise<[Cargo, InstructionSet]> =>
-  Promise.resolve(split('\n\n')(value)).then(([cargo, instructionSet]) => [
-    toCargo(cargo),
-    toInstructionSet(instructionSet)
-  ]);
+const inputToCargoAndInstructions = flow(
+  split('\n\n'),
+  asTuple,
+  ([cargo, instructionSet]) => [toCargo(cargo), toInstructionSet(instructionSet)] as const
+);
 
 runner.run(([cargo, instructions]) => {
   instructions.forEach(([amount, from, to]) => {
