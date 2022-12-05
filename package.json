@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "advent of code 2022",
   "scripts": {
-    "start": "vitest"
+    "start": "vitest",
+    "format": "rome format . --write",
+    "lint": "rome check . --apply-suggested"
   },
   "repository": {
     "type": "git",
@@ -15,9 +17,10 @@
     "url": "https://github.com/JeanBarriere/aoc-2022/issues"
   },
   "homepage": "https://github.com/JeanBarriere/aoc-2022#readme",
-  "dependencies": {
+  "devDependencies": {
     "@types/node": "^18.11.10",
     "dotenv": "^16.0.3",
+    "rome": "^10.0.1",
     "typescript": "^4.9.3",
     "vite-tsconfig-paths": "^3.6.0",
     "vitest": "^0.25.3"

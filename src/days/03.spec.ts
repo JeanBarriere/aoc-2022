@@ -1,6 +1,6 @@
-import { map } from "@utils/array";
-import { createAdventRunnerForDay } from "@utils/runner";
-import { list } from "@utils/transformers";
+import { map } from '@utils/array';
+import { createAdventRunnerForDay } from '@utils/runner';
+import { list } from '@utils/transformers';
 
 const runner = createAdventRunnerForDay(3);
 
@@ -9,16 +9,12 @@ type BigRucksack = string;
 type Rucksacks = Rucksack[];
 type Ruckstack = [a: BigRucksack, b: BigRucksack, c: BigRucksack];
 
-const Priorities = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const Priorities = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const splitInHalf = (line: string) =>
-  [
-    line.slice(0, line.length / 2),
-    line.slice(line.length / 2, line.length),
-  ] as [string, string];
+  [line.slice(0, line.length / 2), line.slice(line.length / 2, line.length)] as [string, string];
 
-const splitLine = (value: string) =>
-  Promise.resolve(list(value)).then(map(splitInHalf));
+const splitLine = (value: string) => Promise.resolve(list(value)).then(map(splitInHalf));
 
 const sliceArrayEvery =
   <T, U>(index: number) =>
@@ -32,36 +28,30 @@ const sliceArrayEvery =
     return newArray;
   };
 
-const sliceLines = (value: string) =>
-  Promise.resolve(list(value)).then(sliceArrayEvery<string, Ruckstack>(3));
+const sliceLines = (value: string) => Promise.resolve(list(value)).then(sliceArrayEvery<string, Ruckstack>(3));
 
 const findCommonLetter = ([left, right]: Rucksack) => {
   return left
-    .split("")
+    .split('')
     .filter((l) => right.includes(l))
     .at(0);
 };
 
 const findCommonLetterInRucktrack = ([a, b, c]: Ruckstack) => {
   return a
-    .split("")
+    .split('')
     .filter((l) => b.includes(l) && c.includes(l))
     .at(0);
 };
 
 const findCommonLetterGeneric = (left: string, ...right: string[]) => {
   return left
-    .split("")
-    .filter(
-      (l) =>
-        right.length ===
-        right.reduce((found, line) => found + (line.includes(l) ? 1 : 0), 0)
-    )
+    .split('')
+    .filter((l) => right.length === right.reduce((found, line) => found + (line.includes(l) ? 1 : 0), 0))
     .at(0);
 };
 
-const letterToPriorityPoint = (char?: string): number =>
-  Priorities.indexOf(char ?? "") + 1;
+const letterToPriorityPoint = (char?: string): number => Priorities.indexOf(char ?? '') + 1;
 const sum = (left: number, right: number) => left + right;
 
 runner.run((rucksacks: Rucksacks) => {

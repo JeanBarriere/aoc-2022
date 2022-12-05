@@ -1,8 +1,8 @@
-import { map } from "@utils/array";
-import { createAdventRunnerForDay } from "@utils/runner";
-import { split } from "@utils/string";
-import { list } from "@utils/transformers";
-import { Transformer } from "@types";
+import { map } from '@utils/array';
+import { createAdventRunnerForDay } from '@utils/runner';
+import { split } from '@utils/string';
+import { list } from '@utils/transformers';
+import { Transformer } from '@types';
 
 class Vector<Dimension = number> {
   #from: Dimension;
@@ -14,7 +14,7 @@ class Vector<Dimension = number> {
   }
 
   static from(str: string): Vector {
-    const [from, to] = str.split("-");
+    const [from, to] = str.split('-');
 
     return new Vector(Number(from), Number(to));
   }
@@ -29,21 +29,11 @@ class Vector<Dimension = number> {
 }
 
 const runner = createAdventRunnerForDay(4);
-export const vectorsList: Transformer<Array<[Vector, Vector]>> = async (
-  value: string
-) =>
+export const vectorsList: Transformer<[Vector, Vector][]> = async (value: string) =>
   Promise.resolve(list(value))
-    .then(map(split(",")))
+    .then(map(split(',')))
     .then(map(map(Vector.from) as (value: string[]) => [Vector, Vector]));
 
-runner.run(
-  (vectorsList) =>
-    vectorsList.filter(([a, b]) => a.includes(b) || b.includes(a)).length,
-  vectorsList
-);
+runner.run((vectorsList) => vectorsList.filter(([a, b]) => a.includes(b) || b.includes(a)).length, vectorsList);
 
-runner.run(
-  (vectorsList) =>
-    vectorsList.filter(([a, b]) => a.intersects(b) || b.intersects(a)).length,
-  vectorsList
-);
+runner.run((vectorsList) => vectorsList.filter(([a, b]) => a.intersects(b) || b.intersects(a)).length, vectorsList);

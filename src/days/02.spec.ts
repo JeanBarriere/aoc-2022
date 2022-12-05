@@ -1,73 +1,73 @@
-import { createAdventRunnerForDay } from "@utils/runner";
+import { createAdventRunnerForDay } from '@utils/runner';
 
 const runner = createAdventRunnerForDay(2);
 
 enum Shape {
   Rock = 1,
   Paper = 2,
-  Scissors = 3,
+  Scissors = 3
 }
 
 enum Result {
   Win = 6,
   Draw = 3,
-  Lose = 0,
+  Lose = 0
 }
 
-type Opponent = "A" | "B" | "C";
-type Me = "X" | "Y" | "Z";
+type Opponent = 'A' | 'B' | 'C';
+type Me = 'X' | 'Y' | 'Z';
 
 const mapOpponent = (opponent: Opponent): Shape => {
   switch (opponent) {
-    case "A":
+    case 'A':
       return Shape.Rock;
-    case "B":
+    case 'B':
       return Shape.Paper;
-    case "C":
+    case 'C':
       return Shape.Scissors;
   }
 };
 const mapMe = (me: Me): Shape => {
   switch (me) {
-    case "X":
+    case 'X':
       return Shape.Rock;
-    case "Y":
+    case 'Y':
       return Shape.Paper;
-    case "Z":
+    case 'Z':
       return Shape.Scissors;
   }
 };
 
 const mapMeResult = (me: Me): Result => {
   switch (me) {
-    case "X":
+    case 'X':
       return Result.Lose;
-    case "Y":
+    case 'Y':
       return Result.Draw;
-    case "Z":
+    case 'Z':
       return Result.Win;
   }
 };
 
-type Guide = Array<[Shape, Shape]>;
-type GuideResult = Array<[Shape, Result]>;
+type Guide = [Shape, Shape][];
+type GuideResult = [Shape, Result][];
 
 const extractGuideResult = (value: string): GuideResult =>
   value
-    .split("\n")
+    .split('\n')
     .filter(Boolean)
     .map((line) => {
-      const [opponent, me] = line.split(" ");
+      const [opponent, me] = line.split(' ');
 
       return [mapOpponent(opponent as Opponent), mapMeResult(me as Me)];
     });
 
 const extractGuide = (value: string): Guide =>
   value
-    .split("\n")
+    .split('\n')
     .filter(Boolean)
     .map((line) => {
-      const [opponent, me] = line.split(" ");
+      const [opponent, me] = line.split(' ');
 
       return [mapOpponent(opponent as Opponent), mapMe(me as Me)];
     });
@@ -77,10 +77,7 @@ const pointsOf = (shapeOrResult: Shape | Result): number => {
 };
 
 const win = (left: Shape, right: Shape): boolean => {
-  return (
-    pointsOf(right) - pointsOf(left) === 1 ||
-    pointsOf(right) - pointsOf(left) === -2
-  );
+  return pointsOf(right) - pointsOf(left) === 1 || pointsOf(right) - pointsOf(left) === -2;
 };
 
 const draw = (left: Shape, right: Shape): boolean => {
@@ -118,17 +115,10 @@ const evalPartyPoint = ([left, right]: [left: Shape, right: Shape]): number => {
   return pointsOf(right) + (win(left, right) ? 6 : draw(left, right) ? 3 : 0);
 };
 
-const evalGuidedPoint = ([left, right]: [
-  left: Shape,
-  right: Result
-]): number => {
+const evalGuidedPoint = ([left, right]: [left: Shape, right: Result]): number => {
   return (
     pointsOf(right) +
-    (isWinResult(right)
-      ? pointsOf(betterThan(left))
-      : isDrawResult(right)
-      ? pointsOf(left)
-      : pointsOf(worseThan(left)))
+    (isWinResult(right) ? pointsOf(betterThan(left)) : isDrawResult(right) ? pointsOf(left) : pointsOf(worseThan(left)))
   );
 };
 
@@ -136,7 +126,4 @@ const sum = (left: number, right: number) => left + right;
 
 runner.run((guide) => guide.map(evalPartyPoint).reduce(sum), extractGuide);
 
-runner.run(
-  (guide) => guide.map(evalGuidedPoint).reduce(sum),
-  extractGuideResult
-);
+runner.run((guide) => guide.map(evalGuidedPoint).reduce(sum), extractGuideResult);

@@ -8,6 +8,6 @@ export const environment = (key: string) => {
         throw new Error(`environment not found: ${key}`);
       }
       return value;
-    },
+    }
   };
 };

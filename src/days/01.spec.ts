@@ -1,5 +1,5 @@
-import { createAdventRunnerForDay } from "@utils/runner";
-import { numbersList } from "@utils/transformers";
+import { createAdventRunnerForDay } from '@utils/runner';
+import { numbersList } from '@utils/transformers';
 
 const runner = createAdventRunnerForDay(1);
 
@@ -16,8 +16,7 @@ const sliceArrayBy =
     return newArray;
   };
 
-const sliceTransformer = async (value: string) =>
-  Promise.resolve(numbersList(value)).then(sliceArrayBy(0));
+const sliceTransformer = async (value: string) => Promise.resolve(numbersList(value)).then(sliceArrayBy(0));
 
 const sum = (left: number, right: number) => left + right;
 
@@ -32,11 +31,7 @@ runner.run((caloriesList) => {
 const sortNumberDesc = (left: number, right: number) => right - left;
 
 runner.run((caloriesList) => {
-  const caloriesSummed = caloriesList
-    .map(arraySum)
-    .sort(sortNumberDesc)
-    .splice(0, 3)
-    .reduce(sum);
+  const caloriesSummed = caloriesList.map(arraySum).sort(sortNumberDesc).splice(0, 3).reduce(sum);
 
   return caloriesSummed;
 }, sliceTransformer);

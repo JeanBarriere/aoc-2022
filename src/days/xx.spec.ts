@@ -1,4 +1,4 @@
-import { createAdventRunnerForDay, log } from "@utils/runner";
+import { createAdventRunnerForDay, log } from '@utils/runner';
 
 const runner = createAdventRunnerForDay(0);
 
