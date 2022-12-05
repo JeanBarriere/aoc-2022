@@ -38,16 +38,12 @@ export const vectorsList: Transformer<Array<[Vector, Vector]>> = async (
 
 runner.run(
   (vectorsList) =>
-    vectorsList
-      .filter(([a, b]) => a.includes(b) || b.includes(a))
-      .length,
+    vectorsList.filter(([a, b]) => a.includes(b) || b.includes(a)).length,
   vectorsList
 );
 
 runner.run(
   (vectorsList) =>
-    vectorsList
-      .filter(([a, b]) => a.intersects(b) || b.intersects(a))
-      .length,
+    vectorsList.filter(([a, b]) => a.intersects(b) || b.intersects(a)).length,
   vectorsList
 );
