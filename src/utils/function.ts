@@ -2,7 +2,7 @@ export type MapFn<T, U> = (value: T) => U;
 
 export const identity = <T>(value: T): T => value;
 export const get =
-  <T>(value: T): (() => T) =>
+  <T>(value: T) =>
   () =>
     value;
 

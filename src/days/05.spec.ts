@@ -1,4 +1,4 @@
-import { filter, last, map, reduce, reverse, slice } from '@utils/array';
+import { filter, forEach, join, last, loop, map, reduce, reverse, slice } from '@utils/array';
 import { flow, get, pipe } from '@utils/function';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { split } from '@utils/string';
@@ -24,7 +24,7 @@ class Cargo {
     } as const;
   }
 
-  public get containers(): ReadonlyArray<Crates> {
+  public get containers(): Crates[] {
     return this.#containers;
   }
 }
@@ -65,20 +65,30 @@ const inputToCargoAndInstructions = flow(
   ([cargo, instructionSet]) => [toCargo(cargo), toInstructionSet(instructionSet)] as const
 );
 
-runner.run(([cargo, instructions]) => {
-  instructions.forEach(([amount, from, to]) => {
-    for (let move = 0; move < amount; move++) {
-      const movingCrates = cargo.mover.grabCrates(from - 1) ?? [];
-      cargo.mover.addCrates(to - 1, ...movingCrates);
-    }
-  });
-  return cargo.containers.map(last()).join('');
-}, inputToCargoAndInstructions);
+runner.run(
+  ([cargo, instructions]) =>
+    pipe(
+      instructions,
+      forEach(([amount, from, to]: Instruction) => {
+        loop(amount, () => cargo.mover.addCrates(to - 1, ...(cargo.mover.grabCrates(from - 1) ?? [])));
+      }),
+      get(cargo.containers),
+      map(last),
+      join('')
+    ),
+  inputToCargoAndInstructions
+);
 
-runner.run(([cargo, instructions]) => {
-  instructions.forEach(([amount, from, to]) => {
-    const movingCrates = cargo.mover.grabCrates(from - 1, amount) ?? [];
-    cargo.mover.addCrates(to - 1, ...movingCrates);
-  });
-  return cargo.containers.map(last()).join('');
-}, inputToCargoAndInstructions);
+runner.run(
+  ([cargo, instructions]) =>
+    pipe(
+      instructions,
+      forEach(([amount, from, to]: Instruction) =>
+        cargo.mover.addCrates(to - 1, ...(cargo.mover.grabCrates(from - 1, amount) ?? []))
+      ),
+      get(cargo.containers),
+      map(last),
+      join('')
+    ),
+  inputToCargoAndInstructions
+);
