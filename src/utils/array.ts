@@ -12,6 +12,11 @@ export const forEach =
     return arr;
   };
 
+export const findIndex =
+  <T>(findIndexFn: (value: T, index: number, array: T[]) => void) =>
+  (arr: T[]): number =>
+    arr.findIndex(findIndexFn);
+
 export const loop = <U>(cycles: number, mapFn: MapFn<void, U>): U[] => new Array(cycles).fill(null).map(mapFn);
 
 export const filter =
