@@ -5,7 +5,8 @@
   "scripts": {
     "start": "vitest",
     "format": "rome format . --write",
-    "lint": "rome check . --apply-suggested"
+    "lint": "rome check . --apply-suggested",
+    "unwrap": "sh tools/generator.sh"
   },
   "repository": {
     "type": "git",
