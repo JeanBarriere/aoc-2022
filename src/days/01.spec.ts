@@ -1,3 +1,4 @@
+import { sortNumberDesc } from '@utils/number';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { numbersList } from '@utils/transformers';
 
@@ -27,8 +28,6 @@ runner.run((caloriesList) => {
 
   return Math.max(...caloriesSummed);
 }, sliceTransformer);
-
-const sortNumberDesc = (left: number, right: number) => right - left;
 
 runner.run((caloriesList) => {
   const caloriesSummed = caloriesList.map(arraySum).sort(sortNumberDesc).splice(0, 3).reduce(sum);

@@ -1,4 +1,5 @@
 import { map } from '@utils/array';
+import { sum } from '@utils/number';
 import { createAdventRunnerForDay } from '@utils/runner';
 import { list } from '@utils/transformers';
 
@@ -52,7 +53,6 @@ const findCommonLetterGeneric = (left: string, ...right: string[]) => {
 };
 
 const letterToPriorityPoint = (char?: string): number => Priorities.indexOf(char ?? '') + 1;
-const sum = (left: number, right: number) => left + right;
 
 runner.run((rucksacks: Rucksacks) => {
   return (
