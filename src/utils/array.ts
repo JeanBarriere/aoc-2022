@@ -24,6 +24,11 @@ export const filter =
   (arr: T[]) =>
     arr.filter(filterFn);
 
+export const sort =
+  <T>(sortFn?: (left: T, right: T) => number) =>
+  (arr: T[]) =>
+    arr.sort(sortFn);
+
 export function reduce<U, T>(
   reduceFn: (previousValue: U, currentValue: T, currentIndex: number) => U,
   initialValue: U
@@ -54,7 +59,11 @@ export const length = <T>(arr: T[]) => arr.length;
 
 export const reverse = <T>(arr: T[]) => arr.reverse();
 
+export const flat = <T>(arr: T[]) => arr.flat();
+
+export const first = <T>(arr: T[]) => arr.at(0);
 export const last = <T>(arr: T[]) => arr.at(-1);
+
 export const join =
   <T>(separator?: string) =>
   (arr: T[]) =>
