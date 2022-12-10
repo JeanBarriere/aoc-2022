@@ -71,7 +71,14 @@ class Bridge {
 
 runner.run(
   flow(
-    reduce((bridge, action: Action) => loop(action[1], () => bridge.move(action[0])), new Bridge(2)),
+    reduce(
+      (bridge, action: Action) =>
+        pipe(
+          loop(action[1], () => bridge.move(action[0])),
+          last
+        )!,
+      new Bridge(2)
+    ),
     (bridge: Bridge) => bridge.tail.map(PositionToString),
     asSet,
     size
@@ -81,7 +88,14 @@ runner.run(
 
 runner.run(
   flow(
-    reduce((bridge, action: Action) => loop(action[1], () => bridge.move(action[0])), new Bridge(10)),
+    reduce(
+      (bridge, action: Action) =>
+        pipe(
+          loop(action[1], () => bridge.move(action[0])),
+          last
+        )!,
+      new Bridge(10)
+    ),
     (bridge: Bridge) => bridge.tail.map(PositionToString),
     asSet,
     size

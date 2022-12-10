@@ -17,13 +17,12 @@ export const findIndex =
   (arr: T[]): number =>
     arr.findIndex(findIndexFn);
 
-export const loop = <U>(times: number, mapFn: MapFn<number, U>): U =>
+export const loop = <U>(times: number, mapFn: MapFn<number, U>): U[] =>
   pipe(
     new Array(times),
     fill(null),
-    map((_, times) => mapFn(times + 1)),
-    last
-  )!;
+    map((_, times) => mapFn(times + 1))
+  );
 
 export const filter =
   <T, U>(filterFn: (value: T, index: number, array: T[]) => U) =>
