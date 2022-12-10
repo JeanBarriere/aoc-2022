@@ -1,4 +1,4 @@
-import { MapFn } from './function';
+import { MapFn, pipe } from './function';
 
 export const map =
   <T, U>(mapFn: (value: T, index: number, array: T[]) => U) =>
@@ -17,12 +17,23 @@ export const findIndex =
   (arr: T[]): number =>
     arr.findIndex(findIndexFn);
 
-export const loop = <U>(cycles: number, mapFn: MapFn<void, U>): U[] => new Array(cycles).fill(null).map(mapFn);
+export const loop = <U>(times: number, mapFn: MapFn<number, U>): U =>
+  pipe(
+    new Array(times),
+    fill(null),
+    map((_, times) => mapFn(times + 1)),
+    last
+  )!;
 
 export const filter =
   <T, U>(filterFn: (value: T, index: number, array: T[]) => U) =>
   (arr: T[]) =>
     arr.filter(filterFn);
+
+export const fill =
+  <T>(value: T, start?: number, end?: number) =>
+  (arr: T[]) =>
+    arr.fill(value, start, end);
 
 export const sort =
   <T>(sortFn?: (left: T, right: T) => number) =>
@@ -63,6 +74,7 @@ export const flat = <T>(arr: T[]) => arr.flat();
 
 export const first = <T>(arr: T[]) => arr.at(0);
 export const last = <T>(arr: T[]) => arr.at(-1);
+export const at = (index: number) => <T>(arr: T[]) => arr.at(index);
 
 export const join =
   <T>(separator?: string) =>
