@@ -17,6 +17,11 @@ export const findIndex =
   (arr: T[]): number =>
     arr.findIndex(findIndexFn);
 
+export const find =
+  <T>(findFn: (value: T, index: number, array: T[]) => boolean) =>
+  (arr: T[]): T | undefined =>
+    arr.find(findFn);
+
 export const loop = <U>(times: number, mapFn: MapFn<number, U>): U[] =>
   pipe(
     new Array(times),
